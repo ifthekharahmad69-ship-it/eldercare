@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { MapPin, Navigation, Building2, ShieldAlert, Crosshair, Sparkles } from 'lucide-react'
+import { MapPin } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
 import MapView from '../components/map/MapView'

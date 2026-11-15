@@ -5,13 +5,7 @@ import {
   Search,
   Clock,
   Trash2,
-  CheckCircle2,
-  AlertCircle,
-  Sparkles,
-  Info,
-  X,
-  Building2,
-  BadgeIndianRupee
+  X
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
@@ -20,7 +14,7 @@ import { useMedicineSearch } from '../hooks/useMedicineSearch'
 
 export default function MedicationsPage() {
   const { medications, addMedication, deleteMedication, toggleDoseTaken } = useData()
-  const { searchTerm, setSearchTerm, searchResults, loading: searchLoading, totalMedicinesCount } = useMedicineSearch()
+  const { searchTerm, setSearchTerm, searchResults, totalMedicinesCount } = useMedicineSearch()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [formData, setFormData] = useState({
@@ -130,6 +124,7 @@ export default function MedicationsPage() {
 
                   <button
                     onClick={() => deleteMedication(med.id)}
+                    aria-label="Remove Medication"
                     className="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors"
                     title="Remove Medication"
                   >

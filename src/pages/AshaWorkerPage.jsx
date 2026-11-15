@@ -1,20 +1,14 @@
 import React, { useState } from 'react'
 import {
-  Heart,
   Calendar,
   Clock,
   CheckCircle2,
   Phone,
   MessageCircle,
-  FileText,
   Activity,
-  Plus,
-  AlertTriangle,
   Pill,
   Building2,
   BadgeCheck,
-  Sparkles,
-  ArrowRight,
   X
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
@@ -23,7 +17,7 @@ import { useData } from '../context/DataContext'
 import { useAuth } from '../context/AuthContext'
 
 export default function AshaWorkerPage() {
-  const { ashaData, logAshaVitals, requestAshaRefill, scheduleAshaVisit, medications } = useData()
+  const { ashaData, logAshaVitals, requestAshaRefill, medications } = useData()
   const { profile } = useAuth()
 
   const [isVitalsModalOpen, setIsVitalsModalOpen] = useState(false)
@@ -335,6 +329,7 @@ export default function AshaWorkerPage() {
                 </div>
                 <button
                   onClick={() => setIsVitalsModalOpen(false)}
+                  aria-label="Close Record Home Visit Vitals Modal"
                   className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
                 >
                   <X className="w-5 h-5" />
@@ -442,6 +437,7 @@ export default function AshaWorkerPage() {
                 </div>
                 <button
                   onClick={() => setIsRefillModalOpen(false)}
+                  aria-label="Close Government PHC Refill Modal"
                   className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
                 >
                   <X className="w-5 h-5" />

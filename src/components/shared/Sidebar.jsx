@@ -6,8 +6,6 @@ import {
   FileText,
   Users,
   Bell,
-  Settings,
-  Heart,
   LogOut,
   MapPin,
   ShieldAlert,
@@ -15,11 +13,9 @@ import {
   Calendar
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
-import { useData } from '../../context/DataContext'
 
 export default function Sidebar() {
-  const { user, profile, logout } = useAuth()
-  const { notifications } = useData()
+  const { logout } = useAuth()
   const navigate = useNavigate()
 
   const navItems = [

@@ -1,42 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
-  Stethoscope,
-  Pill,
-  Clock,
   Volume2,
   CheckCircle2,
-  AlertTriangle,
-  Users,
   ArrowRight,
   RotateCcw,
-  Play,
-  Pause,
-  Mail,
-  Phone,
-  ShieldCheck,
-  ChevronRight,
-  Sparkles,
-  Heart,
-  Calendar,
   X
 } from 'lucide-react'
 import { useData } from '../../context/DataContext'
-import { useAuth } from '../../context/AuthContext'
 
 export default function CompleteLoopDemo({ isOpen, onClose }) {
   const {
     medications,
     toggleDoseTaken,
     addNotification,
-    logAshaVitals,
-    adherenceRate
+    logAshaVitals
   } = useData()
 
   // 7 steps
   const [currentStep, setCurrentStep] = useState(1)
   const [isPlayingAudio, setIsPlayingAudio] = useState(false)
-  const [simulationBranch, setSimulationBranch] = useState(null) // 'acknowledged' or 'missed'
-  const [autoPlay, setAutoPlay] = useState(false)
 
   const teluguSpeechText =
     'నమస్తే లక్ష్మి గారూ! మీ తదుపరి మందు వివరాలు: రకం: ఇది మీ మధుమేహం మరియు బ్లడ్ షుగర్ నియంత్రణ మందు, గ్లైకోమెట్ జీపీ వన్. మోతాదు: సరిగ్గా ఒక టాబ్లెట్, ఐదు వందల మిల్లీగ్రాములు. సమయం: మధ్యాహ్నం ఒకటి గంటలకు, భోజనానికి పదిహేను నిమిషాల ముందు ఒక గ్లాసు గోరువెచ్చని నీటితో వేసుకోండి.'
@@ -67,7 +49,6 @@ export default function CompleteLoopDemo({ isOpen, onClose }) {
   }
 
   const handleElderlyAcknowledge = () => {
-    setSimulationBranch('acknowledged')
     const med2 = medications.find(m => m.id === 'med-02') || medications[1]
     if (med2 && !med2.taken_today?.['1:00 PM']) {
       toggleDoseTaken(med2.id, '1:00 PM')
@@ -76,7 +57,6 @@ export default function CompleteLoopDemo({ isOpen, onClose }) {
   }
 
   const handleSimulateMissedDose = () => {
-    setSimulationBranch('missed')
     addNotification({
       title: '🚨 Missed Dose Escalation',
       message: 'Afternoon Diabetes Medicine overdue by 30 mins. Caregiver notified.',
@@ -98,7 +78,6 @@ export default function CompleteLoopDemo({ isOpen, onClose }) {
 
   const handleReset = () => {
     setCurrentStep(1)
-    setSimulationBranch(null)
     setIsPlayingAudio(false)
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel()
@@ -138,6 +117,7 @@ export default function CompleteLoopDemo({ isOpen, onClose }) {
             </button>
             <button
               onClick={onClose}
+              aria-label="Close Complete Healthcare Loop Demo"
               className="w-8 h-8 rounded-full bg-emerald-800/80 hover:bg-rose-600 text-white flex items-center justify-center transition-all"
             >
               <X className="w-4 h-4" />
@@ -554,7 +534,7 @@ export default function CompleteLoopDemo({ isOpen, onClose }) {
 
                 <div className="flex justify-end">
                   <button
-                    onClick={() => goToStep(7)}
+                    onClick={handleAshaComplete}
                     className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-2xl flex items-center gap-2 shadow-md transition-all active:scale-95"
                   >
                     <span>Proceed to Step 7: ASHA Worker Follow-up</span>

@@ -108,7 +108,7 @@ function main() {
         composition1: (fields[colIdx.short_composition1] || '').trim(),
         composition2: (fields[colIdx.short_composition2] || '').trim(),
       });
-    } catch (err) {
+    } catch {
       skippedParsing++;
     }
   }

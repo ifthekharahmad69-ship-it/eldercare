@@ -189,7 +189,7 @@ export function AuthProvider({ children }) {
         const existingAccounts = JSON.parse(localStorage.getItem('eldercare_all_accounts') || '[]')
         existingAccounts.push(autoUser)
         localStorage.setItem('eldercare_all_accounts', JSON.stringify(existingAccounts))
-      } catch (e) {}
+      } catch {}
       setUser(autoUser)
       setProfile(autoUser)
       setLoading(false)

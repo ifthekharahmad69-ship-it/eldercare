@@ -6,12 +6,8 @@ import {
   KeyRound,
   Sparkles,
   ArrowRight,
-  ShieldCheck,
-  UserCheck,
-  Users,
   Stethoscope,
   BadgeCheck,
-  Heart,
   QrCode
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'

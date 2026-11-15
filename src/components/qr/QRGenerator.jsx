@@ -95,6 +95,7 @@ export default function QRGenerator({ userId, patientName, bloodGroup, emergency
         </button>
         <button
           onClick={copyLink}
+          aria-label="Copy Doctor Emergency Link"
           className="p-2 border border-slate-300 hover:bg-slate-50 rounded-xl text-slate-600"
           title="Copy Link"
         >

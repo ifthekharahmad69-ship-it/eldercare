@@ -1,34 +1,18 @@
 import React, { useState } from 'react'
 import {
-  Bell,
   Mail,
   AlertTriangle,
   Clock,
   Calendar,
   CheckCircle2,
-  Send,
-  ShieldAlert,
-  Smartphone,
-  ExternalLink,
-  Info,
-  Check,
-  RefreshCw,
   X
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
 import { useData } from '../context/DataContext'
-import { useAuth } from '../context/AuthContext'
 
 export default function AlertsPage() {
-  const { profile } = useAuth()
-  const {
-    medications,
-    appointments,
-    familyMembers,
-    notifications,
-    addNotification
-  } = useData()
+  const { addNotification } = useData()
 
   const [activeTab, setActiveTab] = useState('all') // all, missed, upcoming, appointments
   const [emailModal, setEmailModal] = useState(null)
@@ -359,6 +343,7 @@ export default function AlertsPage() {
               </div>
               <button
                 onClick={() => setEmailModal(null)}
+                aria-label="Close Email Preview"
                 className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-all"
               >
                 <X className="w-4 h-4" />

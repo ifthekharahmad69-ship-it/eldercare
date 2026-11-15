@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   ShieldAlert,
   Phone,
-  AlertTriangle,
-  MapPin,
   CheckCircle2,
-  BellRing,
-  Volume2,
-  Users,
-  Building2,
-  ArrowRight,
   Radio,
-  Ambulance,
-  HeartCrack
+  Ambulance
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
@@ -23,32 +15,11 @@ export default function SOSPage() {
   const { profile } = useAuth()
   const { familyMembers, addNotification } = useData()
 
-  const [isTriggered, setIsTriggered] = useState(false)
   const [countdown, setCountdown] = useState(null)
   const [alertSent, setAlertSent] = useState(false)
 
-  // Countdown timer for cancellation
-  useEffect(() => {
-    let timer
-    if (countdown !== null && countdown > 0) {
-      timer = setTimeout(() => setCountdown(countdown - 1), 1000)
-    } else if (countdown === 0) {
-      triggerSOS()
-    }
-    return () => clearTimeout(timer)
-  }, [countdown])
-
-  const startCountdown = () => {
-    setCountdown(3)
-  }
-
-  const cancelCountdown = () => {
+  const triggerSOS = useCallback(() => {
     setCountdown(null)
-  }
-
-  const triggerSOS = () => {
-    setCountdown(null)
-    setIsTriggered(true)
     setAlertSent(true)
 
     // Voice announcement in regional Telugu / Hindi
@@ -63,8 +34,31 @@ export default function SOSPage() {
     addNotification({
       title: '🚨 CRITICAL SOS ALERT BROADCAST',
       message: `Emergency signal dispatched for ${profile?.name || 'Lakshmi Garu'}. Family notified with live coordinates.`,
-      type: 'sos'
+      type: 'danger'
     })
+  }, [addNotification, profile])
+
+  // Countdown timer for cancellation
+  useEffect(() => {
+    let timer
+    if (countdown !== null && countdown > 0) {
+      timer = setTimeout(() => {
+        if (countdown === 1) {
+          triggerSOS()
+        } else {
+          setCountdown(c => (c !== null ? c - 1 : null))
+        }
+      }, 1000)
+    }
+    return () => clearTimeout(timer)
+  }, [countdown, triggerSOS])
+
+  const startCountdown = () => {
+    setCountdown(3)
+  }
+
+  const cancelCountdown = () => {
+    setCountdown(null)
   }
 
   return (
@@ -125,7 +119,7 @@ export default function SOSPage() {
                     <span>Call 108 Ambulance Directly</span>
                   </a>
                   <button
-                    onClick={() => { setAlertSent(false); setIsTriggered(false) }}
+                    onClick={() => setAlertSent(false)}
                     className="w-full py-2.5 border border-slate-300 text-slate-600 font-bold text-xs rounded-xl hover:bg-slate-50"
                   >
                     Reset Emergency State

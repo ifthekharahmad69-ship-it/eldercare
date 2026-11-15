@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Volume2, VolumeX, Mic, MicOff, MessageSquare, X, Globe, Sparkles, Send, ShieldAlert, Heart, Calendar, Pill, Bot, AudioWaveform } from 'lucide-react'
+import { Volume2, Mic, MicOff, X, Send, ShieldAlert, Heart, Calendar, Pill } from 'lucide-react'
 import { useData } from '../../context/DataContext'
-import { useAuth } from '../../context/AuthContext'
 
 const LANGUAGES = [
   { code: 'hi-IN', name: 'हिन्दी (Hindi)', flag: '🇮🇳', greeting: 'नमस्ते! मैं "सेवा" हूँ, आपकी व्यक्तिगत स्वास्थ्य साथी। मैं आपकी क्या सहायता करूँ?', nameTag: 'सेवा (Seva)' },
@@ -16,18 +15,17 @@ const LANGUAGES = [
 
 export default function AvatarAssistant() {
   const navigate = useNavigate()
-  const { medications, appointments, symptoms } = useData()
-  const { profile } = useAuth()
+  const { appointments } = useData()
 
   const [isOpen, setIsOpen] = useState(false)
   const [currentLang, setCurrentLang] = useState(LANGUAGES[0])
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isListening, setIsListening] = useState(false)
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState(() => [
     {
       sender: 'avatar',
       text: LANGUAGES[0].greeting,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      time: 'Just now'
     }
   ])
   const [inputText, setInputText] = useState('')
@@ -84,7 +82,7 @@ export default function AvatarAssistant() {
 
       recognitionRef.current = recognition
       recognition.start()
-    } catch (e) {
+    } catch {
       setIsListening(false)
     }
   }
@@ -248,6 +246,7 @@ export default function AvatarAssistant() {
                   window.speechSynthesis.cancel()
                   setIsOpen(false)
                 }}
+                aria-label="Close AI Avatar Assistant"
                 className="p-1.5 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
               >
                 <X className="w-5 h-5" />
@@ -334,6 +333,7 @@ export default function AvatarAssistant() {
               <button
                 type="button"
                 onClick={toggleListening}
+                aria-label={isListening ? 'Stop voice listening' : 'Start microphone voice input'}
                 className={`p-3 rounded-2xl transition-all duration-300 flex items-center justify-center shrink-0 ${
                   isListening
                     ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/50'
@@ -355,6 +355,7 @@ export default function AvatarAssistant() {
               <button
                 type="submit"
                 disabled={!inputText.trim()}
+                aria-label="Send message to AI assistant"
                 className="p-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white rounded-2xl transition-all shrink-0"
               >
                 <Send className="w-4 h-4" />

@@ -3,14 +3,12 @@ import {
   CalendarDays,
   Plus,
   Clock,
-  MapPin,
   Stethoscope,
   Trash2,
   Calendar,
   X,
   Building2,
-  Bell,
-  CheckCircle2
+  Bell
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
@@ -104,6 +102,7 @@ export default function AppointmentsPage() {
 
                     <button
                       onClick={() => deleteAppointment(appt.id)}
+                      aria-label="Cancel Appointment"
                       className="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors"
                       title="Cancel Appointment"
                     >
@@ -163,6 +162,7 @@ export default function AppointmentsPage() {
                 </div>
                 <button
                   onClick={() => setIsModalOpen(false)}
+                  aria-label="Close Schedule Doctor Visit Modal"
                   className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
                 >
                   <X className="w-5 h-5" />

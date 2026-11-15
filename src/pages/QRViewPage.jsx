@@ -1,26 +1,19 @@
 import React from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   Heart,
-  ShieldAlert,
   Phone,
   AlertTriangle,
   Pill,
-  Calendar,
-  CheckCircle2,
   Printer,
-  Building2,
-  User,
-  Activity,
-  Droplet
+  Activity
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useData } from '../context/DataContext'
 
 export default function QRViewPage() {
-  const { userId } = useParams()
   const { profile } = useAuth()
-  const { medications, appointments, ashaData } = useData()
+  const { medications, ashaData } = useData()
 
   const latestVitals = ashaData?.vitalsHistory?.[0]
 

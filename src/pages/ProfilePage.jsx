@@ -1,17 +1,9 @@
 import React, { useState } from 'react'
 import {
-  UserCheck,
-  Shield,
   Heart,
   AlertTriangle,
-  QrCode,
   Phone,
-  Home,
   Edit2,
-  Check,
-  Save,
-  Printer,
-  Share2,
   FileText
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'

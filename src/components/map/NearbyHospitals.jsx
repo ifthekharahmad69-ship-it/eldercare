@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Phone, Navigation, Clock, Building2, AlertTriangle, ExternalLink } from 'lucide-react'
+import { Phone, Navigation, Clock, Building2 } from 'lucide-react'
 
 // Realistic fallback hospitals for instant display without waiting for external API
 const defaultHospitals = [
@@ -88,7 +88,7 @@ export default function NearbyHospitals({ userCoords, onHospitalsLoaded }) {
     }
 
     fetchOverpass()
-  }, [userCoords])
+  }, [userCoords, onHospitalsLoaded])
 
   return (
     <div className="space-y-3">

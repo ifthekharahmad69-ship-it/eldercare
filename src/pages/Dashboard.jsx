@@ -1,29 +1,17 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
-  Sun,
-  Moon,
   Clock,
-  CheckCircle,
-  Circle,
   Pill,
   Calendar,
-  AlertTriangle,
   Heart,
-  Plus,
-  ShieldAlert,
-  ArrowRight,
-  Sparkles,
-  QrCode,
   Bell,
   Activity,
   Check,
   ChevronDown,
   Globe,
   Users,
-  Mic,
-  TrendingUp,
-  Volume2
+  Mic
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
@@ -42,18 +30,14 @@ const LANGUAGES = [
 ]
 
 export default function Dashboard() {
-  const { user, profile } = useAuth()
+  const { profile } = useAuth()
   const {
     medications,
-    appointments,
-    symptoms,
-    notifications,
     adherenceRate,
     totalDosesToday,
     takenDosesToday,
     toggleDoseTaken
   } = useData()
-  const navigate = useNavigate()
 
   const [selectedLang, setSelectedLang] = useState(LANGUAGES[0])
   const [langDropdownOpen, setLangDropdownOpen] = useState(false)
@@ -62,11 +46,9 @@ export default function Dashboard() {
   const [isMicActive, setIsMicActive] = useState(false)
 
   // Derived direct state from central DataContext
-  const med1 = medications.find(m => m.name.toLowerCase().includes('bp') || m.id === 'med-01') || medications[0]
   const med2 = medications.find(m => m.name.toLowerCase().includes('diabetes') || m.id === 'med-02') || medications[1]
   const med3 = medications.find(m => m.name.toLowerCase().includes('heart') || m.name.toLowerCase().includes('calcium') || m.id === 'med-03') || medications[2]
 
-  const isMed1Taken = med1 ? Boolean(med1.taken_today?.[med1.timing?.[0] || '8:00 AM']) : true
   const isMed2Taken = med2 ? Boolean(med2.taken_today?.[med2.timing?.[0] || '1:00 PM']) : false
   const isMed3Taken = med3 ? Boolean(med3.taken_today?.[med3.timing?.[0] || '8:00 PM']) : false
 
@@ -134,18 +116,8 @@ export default function Dashboard() {
           {/* Left: Grandma Avatar & Warm Greeting */}
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full border-4 border-white shadow-md overflow-hidden bg-[#e2e8f0]">
-                {/* Indian Grandmother Avatar */}
-                <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=256"
-                  alt="Lakshmi Garu"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback to elegant emoji avatar if image blocked
-                    e.currentTarget.style.display = 'none'
-                    e.currentTarget.parentElement.innerHTML = '<div class="w-full h-full bg-emerald-100 flex items-center justify-center text-3xl">👵</div>'
-                  }}
-                />
+              <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full border-4 border-white shadow-md overflow-hidden bg-emerald-100 flex items-center justify-center text-3xl">
+                <span role="img" aria-label="Grandmother Avatar">👵</span>
               </div>
               <span className="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
             </div>
@@ -168,6 +140,7 @@ export default function Dashboard() {
             <div className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                aria-label="Select Language"
                 className="bg-white border border-slate-200 hover:border-emerald-500 rounded-full px-3.5 py-2 text-xs font-bold text-slate-700 flex items-center gap-2 shadow-sm transition-all"
               >
                 <Globe className="w-4 h-4 text-emerald-600" />
@@ -199,6 +172,7 @@ export default function Dashboard() {
             {/* Notification Bell with Red Badge 2 */}
             <Link
               to="/alerts"
+              aria-label="2 Caregiver Alerts and Proactive Emails"
               className="w-10 h-10 rounded-full bg-white border border-slate-200 hover:border-emerald-500 flex items-center justify-center text-slate-600 shadow-sm relative transition-all"
               title="2 Caregiver Alerts & Proactive Emails"
             >
@@ -212,6 +186,7 @@ export default function Dashboard() {
             <div className="relative">
               <button
                 onClick={() => setFamilyDropdownOpen(!familyDropdownOpen)}
+                aria-label="Care Team Menu"
                 className="bg-white border border-slate-200 hover:border-emerald-500 rounded-full py-1.5 pl-2 pr-3.5 flex items-center gap-2 text-xs font-bold text-slate-700 shadow-sm transition-all"
               >
                 <div className="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden border border-slate-200">
@@ -442,7 +417,7 @@ export default function Dashboard() {
                         Take Now
                       </button>
                     )}
-                    <button className="text-slate-400 hover:text-amber-600 p-1" title="Notification set">
+                    <button aria-label="Medicine Notification Reminder" className="text-slate-400 hover:text-amber-600 p-1" title="Notification set">
                       <Bell className="w-4 h-4" />
                     </button>
                   </div>
@@ -759,6 +734,7 @@ export default function Dashboard() {
                 )}
                 <button
                   onClick={handleMicClick}
+                  aria-label="Speak with AI Voice Assistant"
                   className={`w-18 h-18 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${
                     isMicActive
                       ? 'bg-emerald-600 text-white scale-110 shadow-emerald-500/50'

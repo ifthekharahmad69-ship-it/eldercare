@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import { CheckCircle, XCircle, AlertTriangle, Info, X } from 'lucide-react';
 
 const ToastContext = createContext({});
@@ -47,6 +47,7 @@ function ToastItem({ toast, onDismiss }) {
       </p>
       <button
         onClick={() => onDismiss(toast.id)}
+        aria-label="Dismiss notification"
         className="flex-shrink-0 p-1 rounded-lg hover:bg-white/10 transition-colors"
       >
         <X className="w-4 h-4 text-slate-400" />
@@ -72,13 +73,13 @@ export function ToastProvider({ children }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const toast = useCallback(
-    {
+  const toast = useMemo(
+    () => ({
       success: (msg) => addToast(msg, 'success'),
       error: (msg) => addToast(msg, 'error'),
       warning: (msg) => addToast(msg, 'warning'),
       info: (msg) => addToast(msg, 'info'),
-    },
+    }),
     [addToast]
   );
 

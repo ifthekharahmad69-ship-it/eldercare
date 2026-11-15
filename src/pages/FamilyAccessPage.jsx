@@ -3,24 +3,18 @@ import {
   Users,
   Plus,
   KeyRound,
-  ShieldCheck,
   Trash2,
   Mail,
   Phone,
   Copy,
   Check,
   X,
-  UserCheck,
-  Heart,
   Pill,
-  Clock,
   Calendar,
-  AlertTriangle,
   MessageCircle,
   Eye,
   CheckCircle2,
-  Activity,
-  Send
+  Activity
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
@@ -397,6 +391,7 @@ export default function FamilyAccessPage() {
 
                       <button
                         onClick={() => deleteFamilyMember(fam.id)}
+                        aria-label="Revoke Care Team Member Access"
                         className="p-1.5 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors"
                         title="Revoke Access"
                       >
@@ -476,6 +471,7 @@ export default function FamilyAccessPage() {
                 </div>
                 <button
                   onClick={() => setIsModalOpen(false)}
+                  aria-label="Close Add Care Team Member Modal"
                   className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
                 >
                   <X className="w-5 h-5" />

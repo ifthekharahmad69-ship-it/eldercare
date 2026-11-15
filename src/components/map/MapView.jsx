@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { MapPin, Navigation, Crosshair } from 'lucide-react'
+import { Crosshair } from 'lucide-react'
 
 // Fix default Leaflet icon paths in Vite
 delete L.Icon.Default.prototype._getIconUrl
@@ -146,6 +146,7 @@ export default function MapView({ userCoords, onLocationFound, hospitals = [] })
       {/* Recenter / Geolocation Button */}
       <button
         onClick={fetchLiveLocation}
+        aria-label="Locate my current GPS position"
         className="absolute top-4 right-4 z-[400] bg-slate-900/90 hover:bg-indigo-600 text-white p-3 rounded-2xl border border-indigo-500/40 shadow-xl flex items-center gap-2 text-xs font-semibold backdrop-blur transition-all"
         title="Find My Live Location"
       >

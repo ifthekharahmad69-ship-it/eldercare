@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { supabase, TABLES } from '../lib/supabase'
 import { useAuth } from './AuthContext'
 
 const DataContext = createContext(null)
@@ -178,6 +177,50 @@ const initialAshaData = {
   ]
 }
 
+function createMedication(elderlyId, medData) {
+  return {
+    id: 'med-' + Date.now(),
+    elderly_id: elderlyId,
+    name: medData.name,
+    dosage: medData.dosage || '1 Tablet',
+    frequency: medData.frequency || 'once_daily',
+    timing: medData.timing || ['09:00'],
+    food_relation: medData.food_relation || 'after_food',
+    instructions: medData.instructions || '',
+    mfr: medData.mfr || 'Pharmaceutical Co.',
+    composition: medData.composition || '',
+    price: medData.price || 'Free (Jan Aushadhi)',
+    prescribed_by: medData.prescribed_by || 'PHC Medical Officer',
+    taken_today: {}
+  }
+}
+
+function createAshaLog(vitals) {
+  const d = new Date()
+  return {
+    id: 'vit-' + Date.now(),
+    date: d.toISOString().split('T')[0],
+    time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    bp: vitals.bp || '120/80 mmHg',
+    sugar: vitals.sugar || '130 mg/dL',
+    pulse: vitals.pulse || '72 bpm',
+    spo2: vitals.spo2 || '98%',
+    weight: vitals.weight || '62 kg',
+    notes: vitals.notes || 'Routine ASHA home visit checkup completed.',
+    status: 'Normal'
+  }
+}
+
+function createRefill(medicineName) {
+  return {
+    id: 'ref-' + Date.now(),
+    medicine: medicineName,
+    source: 'Government Jan Aushadhi Kendra (PHC)',
+    status: 'Requested by ASHA Worker',
+    date: new Date().toISOString().split('T')[0]
+  }
+}
+
 export function DataProvider({ children }) {
   const { profile } = useAuth()
   const elderlyId = profile?.id || 'elderly-demo-01'
@@ -264,21 +307,7 @@ export function DataProvider({ children }) {
 
   // Add Medication
   const addMedication = async (medData) => {
-    const newMed = {
-      id: 'med-' + Date.now(),
-      elderly_id: elderlyId,
-      name: medData.name,
-      dosage: medData.dosage || '1 Tablet',
-      frequency: medData.frequency || 'once_daily',
-      timing: medData.timing || ['09:00'],
-      food_relation: medData.food_relation || 'after_food',
-      instructions: medData.instructions || '',
-      mfr: medData.mfr || 'Pharmaceutical Co.',
-      composition: medData.composition || '',
-      price: medData.price || '0',
-      status: 'active',
-      taken_today: {}
-    }
+    const newMed = createMedication(elderlyId, medData)
 
     setMedications(prev => [newMed, ...prev])
     addNotification({
@@ -355,18 +384,7 @@ export function DataProvider({ children }) {
 
   // ASHA Specific Functions: Log Vitals during home visit
   const logAshaVitals = (vitals) => {
-    const newLog = {
-      id: 'vit-' + Date.now(),
-      date: new Date().toISOString().split('T')[0],
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      bp: vitals.bp || '120/80 mmHg',
-      sugar: vitals.sugar || '130 mg/dL',
-      pulse: vitals.pulse || '72 bpm',
-      spo2: vitals.spo2 || '98%',
-      weight: vitals.weight || '62 kg',
-      notes: vitals.notes || 'Routine ASHA home visit checkup completed.',
-      status: 'Normal'
-    }
+    const newLog = createAshaLog(vitals)
 
     setAshaData(prev => ({
       ...prev,
@@ -384,13 +402,7 @@ export function DataProvider({ children }) {
 
   // ASHA Refill Request
   const requestAshaRefill = (medicineName) => {
-    const newRefill = {
-      id: 'ref-' + Date.now(),
-      medicine: medicineName,
-      source: 'Government Jan Aushadhi Kendra (PHC)',
-      status: 'Requested by ASHA Worker',
-      date: new Date().toISOString().split('T')[0]
-    }
+    const newRefill = createRefill(medicineName)
 
     setAshaData(prev => ({
       ...prev,

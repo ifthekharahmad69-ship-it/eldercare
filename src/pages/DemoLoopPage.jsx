@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import CompleteLoopDemo from '../components/demo/CompleteLoopDemo'
 import Sidebar from '../components/shared/Sidebar'
 

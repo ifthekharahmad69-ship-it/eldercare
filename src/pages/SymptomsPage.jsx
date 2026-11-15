@@ -2,15 +2,9 @@ import React, { useState } from 'react'
 import {
   Stethoscope,
   Plus,
-  AlertTriangle,
   Clock,
-  CheckCircle2,
-  Calendar,
   X,
-  ShieldAlert,
-  Send,
-  HeartCrack,
-  Bell
+  ShieldAlert
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
@@ -162,6 +156,7 @@ export default function SymptomsPage() {
                 </div>
                 <button
                   onClick={() => setIsModalOpen(false)}
+                  aria-label="Close Log Health Feeling Modal"
                   className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
                 >
                   <X className="w-5 h-5" />

@@ -1,24 +1,10 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
-  Heart,
   Sparkles,
-  Pill,
-  ShieldAlert,
-  QrCode,
-  Globe2,
-  Users,
-  BellRing,
   ArrowRight,
   CheckCircle2,
-  MapPin,
-  Lock,
-  ChevronRight,
-  Activity,
-  Calendar,
-  Clock,
-  Mic,
-  Award
+  Lock
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 

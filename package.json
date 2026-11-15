@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node scripts/testSuite.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:node": "node scripts/testSuite.js",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -27,6 +29,7 @@
     "@vitejs/plugin-react": "^6.1.2",
     "oxlint": "^1.90.0",
     "tailwindcss": "^4.3.5",
-    "vite": "^8.3.6"
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
   }
 }
