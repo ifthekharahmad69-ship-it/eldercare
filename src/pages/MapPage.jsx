@@ -13,7 +13,7 @@ export default function MapPage() {
     <div className="flex min-h-screen bg-[#f0fdf4] text-[#0f172a] rural-landscape-bg">
       <Sidebar />
 
-      <main className="flex-1 p-4 sm:p-6 lg:p-7 max-w-[1400px] mx-auto overflow-y-auto pb-24 md:pb-8 relative z-10">
+      <main className="flex-1 pt-20 md:pt-8 pb-32 md:pb-12 px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto overflow-y-auto relative z-10 w-full">
         
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">

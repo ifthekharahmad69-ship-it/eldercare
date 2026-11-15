@@ -161,9 +161,9 @@ export default function AvatarAssistant() {
 
   return (
     <>
-      {/* Floating Avatar Trigger Button */}
+      {/* Floating Avatar Trigger Button - Positioned above mobile bottom bar */}
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        <div className="fixed bottom-22 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-3">
           <div className="hidden sm:flex bg-[#0b1122]/90 backdrop-blur-xl border border-white/10 px-3.5 py-2 rounded-full text-xs text-indigo-200 shadow-2xl items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span className="font-semibold">AI साथी "सेवा" से बात करें</span>
@@ -174,12 +174,12 @@ export default function AvatarAssistant() {
               setIsOpen(true)
               speakText(currentLang.greeting)
             }}
-            className="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-600 to-pink-500 p-[2px] shadow-2xl shadow-indigo-500/40 hover:scale-105 transition-all duration-300 relative group"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-600 to-pink-500 p-[2px] shadow-2xl shadow-indigo-500/40 hover:scale-105 active:scale-95 transition-all duration-300 relative group cursor-pointer"
             aria-label="Open AI Avatar Assistant"
           >
             <div className="w-full h-full bg-[#090d1c] rounded-full flex items-center justify-center relative overflow-hidden">
-              <span className="text-3xl avatar-float select-none">🧕</span>
-              <span className="absolute bottom-1.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#090d1c]"></span>
+              <span className="text-2xl sm:text-3xl avatar-float select-none">🧕</span>
+              <span className="absolute bottom-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#090d1c]"></span>
             </div>
             <div className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-pink-500 rounded-full text-[9px] font-black tracking-wider text-white border-2 border-[#060913]">
               AI
@@ -190,7 +190,7 @@ export default function AvatarAssistant() {
 
       {/* Expanded Luxury Chat Panel */}
       {isOpen && (
-        <div className="fixed bottom-5 right-5 z-50 w-[94vw] sm:w-[420px] max-h-[85vh] h-[650px] bg-[#090e1c]/95 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
+        <div className="fixed bottom-20 inset-x-3 sm:inset-x-auto sm:bottom-6 sm:right-6 z-50 w-auto sm:w-[420px] max-h-[76vh] sm:max-h-[85vh] h-[580px] sm:h-[650px] bg-[#090e1c]/95 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
           
           {/* Header */}
           <div className="bg-gradient-to-r from-indigo-950/80 via-purple-950/70 to-[#070b16] px-5 py-4 border-b border-white/[0.08] flex items-center justify-between">

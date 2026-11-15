@@ -5,7 +5,7 @@ import CompleteLoopDemo from '../components/demo/CompleteLoopDemo'
 import GrandmaHeader from '../components/dashboard/GrandmaHeader'
 import StatsGrid from '../components/dashboard/StatsGrid'
 import DailyScheduleTimeline from '../components/dashboard/DailyScheduleTimeline'
-import { CareTeamCard } from '../components/dashboard/CareTeamCard'
+import CareTeamCard from '../components/dashboard/CareTeamCard'
 import { DailyProgressCard } from '../components/dashboard/DailyProgressCard'
 import { HealthInsightsChart } from '../components/dashboard/HealthInsightsChart'
 import { VoiceAssistantCard } from '../components/dashboard/VoiceAssistantCard'
@@ -18,7 +18,7 @@ const LANGUAGES = [
   { code: 'en', label: 'English', prompt: 'When is my next medicine scheduled?' },
   { code: 'bn', label: 'বাংলা (Bengali)', prompt: 'আমার পরের ওষুধ কখন আছে?' },
   { code: 'ta', label: 'தமிழ் (Tamil)', prompt: 'எனது அடுத்த மருந்து எப்போது?' },
-  { code: 'mr', label: 'मराठी (Marathi)', prompt: 'ماझे पुढचे औषध कधी आहे?' },
+  { code: 'mr', label: 'मराठी (Marathi)', prompt: 'माझे पुढचे औषध कधी आहे?' },
   { code: 'gu', label: 'ગુજરાતી (Gujarati)', prompt: 'મારી આગામી દવા ક્યારે છે?' },
 ]
 
@@ -95,11 +95,12 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#f0fdf4] text-[#0f172a] rural-landscape-bg">
+    <div className="flex min-h-screen bg-[#f6fbf7] text-[#0f172a] rural-landscape-bg">
       <Sidebar />
 
-      <main className="flex-1 p-4 sm:p-6 lg:p-7 max-w-[1400px] mx-auto overflow-y-auto pb-24 md:pb-8 relative z-10">
-        {/* Top Header */}
+      {/* Main Content Area - Generous safe padding on mobile & desktop */}
+      <main className="flex-1 pt-20 md:pt-8 pb-32 md:pb-12 px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto overflow-y-auto relative z-10 w-full">
+        {/* Top Header Greeting */}
         <GrandmaHeader
           profile={profile}
           selectedLang={selectedLang}
@@ -115,9 +116,9 @@ export default function Dashboard() {
         />
 
         {/* 3 Columns Responsive Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-7">
           {/* Column 1: Medication Schedule & Care Team */}
-          <div className="lg:col-span-5 space-y-5">
+          <div className="lg:col-span-5 space-y-5 sm:space-y-6">
             <DailyScheduleTimeline
               isMed2Taken={isMed2Taken}
               isMed3Taken={isMed3Taken}
@@ -129,7 +130,7 @@ export default function Dashboard() {
           </div>
 
           {/* Column 2: Progress, Alert & Line Chart */}
-          <div className="lg:col-span-4 space-y-5">
+          <div className="lg:col-span-4 space-y-5 sm:space-y-6">
             <DailyProgressCard
               adherenceRate={adherenceRate}
               takenDosesToday={takenDosesToday}
@@ -141,7 +142,7 @@ export default function Dashboard() {
           </div>
 
           {/* Column 3: AI Voice & Emergency SOS */}
-          <div className="lg:col-span-3 space-y-5">
+          <div className="lg:col-span-3 space-y-5 sm:space-y-6">
             <VoiceAssistantCard
               aiVoiceDetail={aiVoiceDetail}
               selectedLang={selectedLang}
