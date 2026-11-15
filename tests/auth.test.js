@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { hashPasscode, sanitizeInput } from '../src/utils/security'
 
 describe('Authentication & Security Input Sanitization', () => {
   const normalizePhone = (phone) => (phone || '').replace(/[^0-9]/g, '').slice(-10)
@@ -22,6 +23,19 @@ describe('Authentication & Security Input Sanitization', () => {
   it('should reject incomplete or empty phone numbers', () => {
     expect(normalizePhone('')).toBe('')
     expect(normalizePhone('12345').length).toBeLessThan(10)
+  })
+
+  it('should sanitize script injection vectors to prevent XSS', () => {
+    const raw = '<script>alert("xss")</script>'
+    expect(sanitizeInput(raw)).not.toContain('<script>')
+    expect(sanitizeInput(raw)).toContain('&lt;script&gt;')
+  })
+
+  it('should produce cryptographic hash for PINs rather than plaintext', async () => {
+    const pin = '1234'
+    const hash = await hashPasscode(pin)
+    expect(hash).not.toBe('1234')
+    expect(hash.length).toBeGreaterThan(10)
   })
 })
 

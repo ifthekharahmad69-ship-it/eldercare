@@ -11,6 +11,7 @@ import {
   QrCode
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { isAccountLocked, recordFailedAttempt, resetFailedAttempts } from '../utils/security'
 
 const ROLES = [
   { id: 'elderly', label: '👵 Elderly', title: 'Elderly Patient (లక్ష్మి గారు)', color: 'emerald' },
@@ -38,6 +39,13 @@ export default function LoginPage() {
     const cleanPhone = (phone || '').replace(/[^0-9]/g, '').slice(-10)
     const cleanPasscode = (passcode || '').trim()
 
+    // 1. Rate-limit / brute-force lockout check
+    const lockCheck = isAccountLocked(cleanPhone)
+    if (lockCheck.isLocked) {
+      setError(`🔒 Security Rate-Limit: Too many failed PIN attempts. Locked out for ${lockCheck.remainingSec}s to prevent brute-force attacks.`)
+      return
+    }
+
     if (!cleanPhone || cleanPhone.length !== 10) {
       setError('Please enter a valid 10-digit mobile number (e.g. 9876543210)')
       return
@@ -53,9 +61,15 @@ export default function LoginPage() {
     setLoading(false)
 
     if (res.success) {
+      resetFailedAttempts(cleanPhone)
       navigate('/dashboard')
     } else {
-      setError(res.error || 'Invalid mobile number or 4-digit PIN')
+      const attemptInfo = recordFailedAttempt(cleanPhone)
+      if (attemptInfo.isLocked) {
+        setError('🔒 Security Alert: 5 consecutive failed PIN attempts. Account locked for 30 seconds.')
+      } else {
+        setError(res.error || 'Invalid mobile number or 4-digit PIN')
+      }
     }
   }
 
