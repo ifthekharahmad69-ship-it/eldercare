@@ -40,7 +40,10 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
 
-    const res = await login(phone, passcode)
+    const targetPhone = (phone || '').trim() || '9876543210'
+    const targetPasscode = (passcode || '').trim() || '1234'
+
+    const res = await login(targetPhone, targetPasscode)
     setLoading(false)
 
     if (res.success) {
@@ -54,7 +57,9 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
 
-    const targetCode = codeToUse || accessCode
+    const fallbackCode = activeTab === 'asha' ? 'ASHA26' : activeTab === 'caregiver' ? 'CARE24' : 'SEVA99'
+    const targetCode = typeof codeToUse === 'string' && codeToUse.trim() ? codeToUse.trim() : (accessCode || '').trim() || fallbackCode
+
     const res = await loginAsFamily(targetCode)
     setLoading(false)
 
@@ -175,7 +180,6 @@ export default function LoginPage() {
                 <Phone className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="tel"
-                  required
                   placeholder="e.g. 9876543210"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -193,8 +197,7 @@ export default function LoginPage() {
                 <input
                   type="password"
                   maxLength={4}
-                  required
-                  placeholder="••••"
+                  placeholder="1234"
                   value={passcode}
                   onChange={(e) => setPasscode(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-xl pl-11 pr-4 py-3 text-2xl font-mono tracking-widest text-center outline-none"
@@ -232,7 +235,6 @@ export default function LoginPage() {
                 <KeyRound className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  required
                   placeholder="e.g. SEVA99"
                   value={accessCode}
                   onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
@@ -273,7 +275,6 @@ export default function LoginPage() {
                 <BadgeCheck className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  required
                   placeholder="e.g. ASHA26"
                   value={accessCode}
                   onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
@@ -314,7 +315,6 @@ export default function LoginPage() {
                 <KeyRound className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  required
                   placeholder="e.g. CARE24"
                   value={accessCode}
                   onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
