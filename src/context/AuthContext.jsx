@@ -1,13 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { supabase, TABLES } from '../lib/supabase'
-
-const AuthContext = createContext(null)
-
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) throw new Error('useAuth must be used within an AuthProvider')
-  return context
-}
+import { AuthContext } from './auth-context'
 
 // Default mock profile for instant preview matching the rural eldercare design
 const defaultElderlyProfile = {

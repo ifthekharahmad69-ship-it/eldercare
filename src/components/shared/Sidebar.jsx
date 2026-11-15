@@ -12,7 +12,7 @@ import {
   BadgeCheck,
   Calendar
 } from 'lucide-react'
-import { useAuth } from '../../context/AuthContext'
+import { useAuth } from '../../context/auth-context'
 
 export default function Sidebar() {
   const { logout } = useAuth()

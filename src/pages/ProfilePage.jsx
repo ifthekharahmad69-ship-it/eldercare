@@ -9,8 +9,8 @@ import {
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
 import QRGenerator from '../components/qr/QRGenerator'
-import { useAuth } from '../context/AuthContext'
-import { useData } from '../context/DataContext'
+import { useAuth } from '../context/auth-context'
+import { useData } from '../context/data-context'
 
 export default function ProfilePage() {
   const { profile, updateProfile } = useAuth()

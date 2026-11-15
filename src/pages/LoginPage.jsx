@@ -10,7 +10,7 @@ import {
   BadgeCheck,
   QrCode
 } from 'lucide-react'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/auth-context'
 import { isAccountLocked, recordFailedAttempt, resetFailedAttempts } from '../utils/security'
 
 const ROLES = [

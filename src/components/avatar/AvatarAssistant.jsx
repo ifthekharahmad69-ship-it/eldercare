@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Volume2, Mic, MicOff, X, Send, ShieldAlert, Heart, Calendar, Pill } from 'lucide-react'
-import { useData } from '../../context/DataContext'
+import { useData } from '../../context/data-context'
 
 const LANGUAGES = [
   { code: 'hi-IN', name: 'हिन्दी (Hindi)', flag: '🇮🇳', greeting: 'नमस्ते! मैं "सेवा" हूँ, आपकी व्यक्तिगत स्वास्थ्य साथी। मैं आपकी क्या सहायता करूँ?', nameTag: 'सेवा (Seva)' },

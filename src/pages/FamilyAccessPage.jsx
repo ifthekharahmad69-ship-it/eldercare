@@ -18,8 +18,8 @@ import {
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
-import { useData } from '../context/DataContext'
-import { useAuth } from '../context/AuthContext'
+import { useData } from '../context/data-context'
+import { useAuth } from '../context/auth-context'
 import { Link } from 'react-router-dom'
 
 export default function FamilyAccessPage() {

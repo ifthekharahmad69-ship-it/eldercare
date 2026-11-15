@@ -1,13 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import { useAuth } from './AuthContext'
-
-const DataContext = createContext(null)
-
-export const useData = () => {
-  const context = useContext(DataContext)
-  if (!context) throw new Error('useData must be used within a DataProvider')
-  return context
-}
+import React, { useState, useEffect } from 'react'
+import { useAuth } from './auth-context'
+import { DataContext } from './data-context'
 
 // Initial realistic default medications matching the ElderCare AI schedule
 const initialMedications = [

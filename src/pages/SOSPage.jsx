@@ -8,8 +8,8 @@ import {
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
-import { useAuth } from '../context/AuthContext'
-import { useData } from '../context/DataContext'
+import { useAuth } from '../context/auth-context'
+import { useData } from '../context/data-context'
 
 export default function SOSPage() {
   const { profile } = useAuth()

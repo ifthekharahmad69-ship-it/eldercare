@@ -8,8 +8,8 @@ import {
   Printer,
   Activity
 } from 'lucide-react'
-import { useAuth } from '../context/AuthContext'
-import { useData } from '../context/DataContext'
+import { useAuth } from '../context/auth-context'
+import { useData } from '../context/data-context'
 
 export default function QRViewPage() {
   const { profile } = useAuth()

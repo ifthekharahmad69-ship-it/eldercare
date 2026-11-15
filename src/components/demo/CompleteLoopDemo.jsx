@@ -6,7 +6,7 @@ import {
   RotateCcw,
   X
 } from 'lucide-react'
-import { useData } from '../../context/DataContext'
+import { useData } from '../../context/data-context'
 
 export default function CompleteLoopDemo({ isOpen, onClose }) {
   const {

@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 import Sidebar from '../components/shared/Sidebar'
 import AvatarAssistant from '../components/avatar/AvatarAssistant'
-import { useData } from '../context/DataContext'
+import { useData } from '../context/data-context'
 
 export default function AlertsPage() {
   const { addNotification } = useData()
