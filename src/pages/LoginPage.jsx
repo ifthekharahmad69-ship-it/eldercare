@@ -34,35 +34,51 @@ export default function LoginPage() {
   const handleElderlyLogin = async (e) => {
     e.preventDefault()
     setError('')
+
+    const cleanPhone = (phone || '').replace(/[^0-9]/g, '').slice(-10)
+    const cleanPasscode = (passcode || '').trim()
+
+    if (!cleanPhone || cleanPhone.length !== 10) {
+      setError('Please enter a valid 10-digit mobile number (e.g. 9876543210)')
+      return
+    }
+
+    if (!cleanPasscode || cleanPasscode.length !== 4) {
+      setError('Please enter your 4-digit PIN passcode')
+      return
+    }
+
     setLoading(true)
-
-    const targetPhone = (phone || '').trim() || '9876543210'
-    const targetPasscode = (passcode || '').trim() || '1234'
-
-    const res = await login(targetPhone, targetPasscode)
+    const res = await login(cleanPhone, cleanPasscode)
     setLoading(false)
 
     if (res.success) {
       navigate('/dashboard')
     } else {
-      setError(res.error || 'Invalid phone number or 4-digit PIN')
+      setError(res.error || 'Invalid mobile number or 4-digit PIN')
     }
   }
 
   const handlePasscodeLogin = async (codeToUse, customRedirect) => {
     setError('')
+
+    const targetCode = typeof codeToUse === 'string' && codeToUse.trim()
+      ? codeToUse.trim()
+      : (accessCode || '').trim()
+
+    if (!targetCode) {
+      setError('Please enter an authorized access passcode')
+      return
+    }
+
     setLoading(true)
-
-    const fallbackCode = activeTab === 'asha' ? 'ASHA26' : activeTab === 'caregiver' ? 'CARE24' : 'SEVA99'
-    const targetCode = typeof codeToUse === 'string' && codeToUse.trim() ? codeToUse.trim() : (accessCode || '').trim() || fallbackCode
-
     const res = await loginAsFamily(targetCode)
     setLoading(false)
 
     if (res.success) {
       navigate(customRedirect || res.redirect || '/dashboard')
     } else {
-      setError(res.error || 'Invalid access passcode')
+      setError(res.error || 'Invalid access passcode. Authorization rejected.')
     }
   }
 
@@ -135,9 +151,9 @@ export default function LoginPage() {
                 onClick={() => {
                   setActiveTab(r.id)
                   setError('')
-                  if (r.id === 'family') setAccessCode('SEVA99')
-                  if (r.id === 'asha') setAccessCode('ASHA26')
-                  if (r.id === 'caregiver') setAccessCode('CARE24')
+                  setPhone('')
+                  setPasscode('')
+                  setAccessCode('')
                 }}
                 className={`py-2 px-1 rounded-xl text-xs font-bold transition-all text-center flex flex-col items-center justify-center ${
                   isActive
@@ -199,7 +215,16 @@ export default function LoginPage() {
                   className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-xl pl-11 pr-4 py-3 text-2xl font-mono tracking-widest text-center outline-none"
                 />
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Default demo passcode: <code>1234</code></p>
+              <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1.5">
+                <span>Verification Credentials:</span>
+                <button
+                  type="button"
+                  onClick={() => { setPhone('9876543210'); setPasscode('1234') }}
+                  className="text-emerald-700 hover:underline font-mono font-bold cursor-pointer"
+                >
+                  Fill Demo: 9876543210 / 1234
+                </button>
+              </div>
             </div>
 
             <button
@@ -207,7 +232,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 mt-2 transition-all cursor-pointer"
             >
-              <span>{loading ? 'Verifying...' : 'Sign In as Lakshmi Garu (Dashboard)'}</span>
+              <span>{loading ? 'Verifying Credentials...' : 'Sign In as Elderly Patient'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
@@ -237,9 +262,16 @@ export default function LoginPage() {
                   className="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl pl-11 pr-4 py-3 text-lg font-mono tracking-widest uppercase font-bold outline-none"
                 />
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">
-                Demo Family Passcode: <code className="font-bold text-indigo-700">SEVA99</code> (Priya Sharma - Daughter)
-              </p>
+              <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1.5">
+                <span>Demo Passcode:</span>
+                <button
+                  type="button"
+                  onClick={() => setAccessCode('SEVA99')}
+                  className="text-indigo-700 hover:underline font-mono font-bold cursor-pointer"
+                >
+                  Fill Demo: SEVA99 (Priya Sharma)
+                </button>
+              </div>
             </div>
 
             <button
@@ -247,7 +279,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 mt-2 transition-all cursor-pointer"
             >
-              <span>{loading ? 'Connecting...' : 'Sign In as Family Member (/family-access)'}</span>
+              <span>{loading ? 'Authenticating...' : 'Sign In as Family Member'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
@@ -277,9 +309,16 @@ export default function LoginPage() {
                   className="w-full bg-slate-50 border border-slate-200 focus:border-teal-500 rounded-xl pl-11 pr-4 py-3 text-lg font-mono tracking-widest uppercase font-bold outline-none"
                 />
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">
-                Demo ASHA Passcode: <code className="font-bold text-teal-700">ASHA26</code> (Savitri Devi - PHC Mangalagiri)
-              </p>
+              <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1.5">
+                <span>Demo Passcode:</span>
+                <button
+                  type="button"
+                  onClick={() => setAccessCode('ASHA26')}
+                  className="text-teal-700 hover:underline font-mono font-bold cursor-pointer"
+                >
+                  Fill Demo: ASHA26 (Savitri Devi)
+                </button>
+              </div>
             </div>
 
             <button
@@ -287,7 +326,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3.5 bg-teal-700 hover:bg-teal-800 active:scale-95 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 mt-2 transition-all cursor-pointer"
             >
-              <span>{loading ? 'Authorizing...' : 'Sign In as ASHA Worker (/asha-worker)'}</span>
+              <span>{loading ? 'Verifying NHM Accreditation...' : 'Sign In as ASHA Health Worker'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
@@ -317,9 +356,16 @@ export default function LoginPage() {
                   className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-xl pl-11 pr-4 py-3 text-lg font-mono tracking-widest uppercase font-bold outline-none"
                 />
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">
-                Demo Caregiver Passcode: <code className="font-bold text-amber-700">CARE24</code> (Ramesh Kumar - Caregiver)
-              </p>
+              <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1.5">
+                <span>Demo Passcode:</span>
+                <button
+                  type="button"
+                  onClick={() => setAccessCode('CARE24')}
+                  className="text-amber-700 hover:underline font-mono font-bold cursor-pointer"
+                >
+                  Fill Demo: CARE24 (Ramesh Kumar)
+                </button>
+              </div>
             </div>
 
             <button
@@ -327,7 +373,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3.5 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 mt-2 transition-all cursor-pointer"
             >
-              <span>{loading ? 'Verifying...' : 'Sign In as Caregiver (/medications)'}</span>
+              <span>{loading ? 'Authenticating Caregiver...' : 'Sign In as Village Caregiver'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>

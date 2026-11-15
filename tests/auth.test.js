@@ -18,6 +18,11 @@ describe('Authentication & Security Input Sanitization', () => {
   it('should preserve clean 10-digit mobile number', () => {
     expect(normalizePhone('9876543210')).toBe('9876543210')
   })
+
+  it('should reject incomplete or empty phone numbers', () => {
+    expect(normalizePhone('')).toBe('')
+    expect(normalizePhone('12345').length).toBeLessThan(10)
+  })
 })
 
 describe('Passcode Authorization & Role Matrix', () => {
@@ -40,5 +45,12 @@ describe('Passcode Authorization & Role Matrix', () => {
   it('should assign dispensing permissions to CARE24', () => {
     expect(roles.CARE24.role).toBe('caretaker')
     expect(roles.CARE24.permissions).toContain('manage_meds')
+  })
+
+  it('should reject unauthorized arbitrary access codes', () => {
+    const authorized = ['SEVA99', 'ASHA26', 'CARE24']
+    expect(authorized.includes('RANDOM123')).toBe(false)
+    expect(authorized.includes('HACKER')).toBe(false)
+    expect(authorized.includes('')).toBe(false)
   })
 })

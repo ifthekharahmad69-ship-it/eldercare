@@ -116,6 +116,15 @@ export function AuthProvider({ children }) {
     const cleanPhone = (phoneInput || '').replace(/[^0-9]/g, '').slice(-10)
     const cleanPasscode = (passcodeInput || '').trim()
 
+    if (!cleanPhone || cleanPhone.length !== 10) {
+      setLoading(false)
+      return { success: false, error: 'Please enter a valid 10-digit mobile number.' }
+    }
+    if (!cleanPasscode || cleanPasscode.length !== 4) {
+      setLoading(false)
+      return { success: false, error: 'Please enter a 4-digit PIN passcode.' }
+    }
+
     // 1. Try Supabase lookup if connected
     try {
       const { data: dbUser, error } = await supabase
@@ -136,7 +145,7 @@ export function AuthProvider({ children }) {
     }
 
     // 2. Demo User Check: (9876543210 / 1234)
-    if ((cleanPhone === '9876543210' || cleanPhone.endsWith('3210') || !cleanPhone) && cleanPasscode === '1234') {
+    if (cleanPhone === '9876543210' && cleanPasscode === '1234') {
       setUser(defaultElderlyProfile)
       setProfile(defaultElderlyProfile)
       setLoading(false)
@@ -183,7 +192,7 @@ export function AuthProvider({ children }) {
         id: 'elderly_' + cleanPhone,
         phone: cleanPhone,
         passcode: cleanPasscode,
-        name: `Lakshmi Garu (${cleanPhone.slice(-4)})`
+        name: `Senior Patient (${cleanPhone.slice(-4)})`
       }
       try {
         const existingAccounts = JSON.parse(localStorage.getItem('eldercare_all_accounts') || '[]')
@@ -260,13 +269,13 @@ export function AuthProvider({ children }) {
       console.warn('LocalStorage family check warning:', e)
     }
 
-    // 3. Predefined Demo & Role codes:
-    if (code === 'SEVA99' || code.startsWith('SEVA') || code.includes('FAMILY')) {
+    // 3. Predefined Verified Role Access Codes:
+    if (code === 'SEVA99') {
       const familyUser = {
         id: 'family-demo-01',
         name: 'Priya Sharma (Daughter / Remote Caregiver)',
         role: 'family',
-        access_code: code,
+        access_code: 'SEVA99',
         elderly_id: defaultElderlyProfile.id,
         elderly_profile: defaultElderlyProfile
       }
@@ -276,12 +285,12 @@ export function AuthProvider({ children }) {
       return { success: true, user: familyUser, redirect: '/family-access' }
     }
 
-    if (code === 'ASHA26' || code.startsWith('ASHA')) {
+    if (code === 'ASHA26') {
       const ashaUser = {
         id: 'asha-demo-01',
         name: 'Savitri Devi (ASHA Health Worker)',
         role: 'asha',
-        access_code: code,
+        access_code: 'ASHA26',
         elderly_id: defaultElderlyProfile.id,
         elderly_profile: defaultElderlyProfile
       }
@@ -291,12 +300,12 @@ export function AuthProvider({ children }) {
       return { success: true, user: ashaUser, redirect: '/asha-worker' }
     }
 
-    if (code === 'CARE24' || code.startsWith('CARE')) {
+    if (code === 'CARE24') {
       const careUser = {
         id: 'care-demo-01',
         name: 'Ramesh Kumar (Village Caregiver)',
         role: 'caretaker',
-        access_code: code,
+        access_code: 'CARE24',
         elderly_id: defaultElderlyProfile.id,
         elderly_profile: defaultElderlyProfile
       }
@@ -306,24 +315,8 @@ export function AuthProvider({ children }) {
       return { success: true, user: careUser, redirect: '/medications' }
     }
 
-    // 4. Any other custom code: allow access as authorized care partner!
-    if (code.length >= 4) {
-      const customCareUser = {
-        id: 'custom-care-' + Date.now(),
-        name: `Care Partner (${code})`,
-        role: 'family',
-        access_code: code,
-        elderly_id: defaultElderlyProfile.id,
-        elderly_profile: defaultElderlyProfile
-      }
-      setUser(customCareUser)
-      setProfile(defaultElderlyProfile)
-      setLoading(false)
-      return { success: true, user: customCareUser, redirect: '/family-access' }
-    }
-
     setLoading(false)
-    return { success: false, error: 'Please enter a valid access code (e.g. SEVA99, ASHA26, CARE24)' }
+    return { success: false, error: 'Invalid access passcode. Authorization rejected.' }
   }
 
   const updateProfile = async (updates) => {
